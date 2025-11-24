@@ -179,8 +179,9 @@ def prompt_claude_code(request: AgentPromptRequest) -> AgentPromptResponse:
     if request.dangerously_skip_permissions:
         cmd.append("--dangerously-skip-permissions")
 
-    # Set up environment with only required variables
-    env = get_claude_env()
+    # Use None to inherit full environment (works with Claude Code subscription)
+    # If ANTHROPIC_API_KEY is set, it will be used; otherwise uses OAuth auth
+    env = None  # Changed from get_claude_env() to support subscription-based auth
 
     try:
         # Execute Claude Code and pipe output to file
